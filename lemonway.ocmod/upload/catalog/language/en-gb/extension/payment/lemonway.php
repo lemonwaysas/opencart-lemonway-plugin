@@ -2,6 +2,7 @@
 // Text
 $_['text_redirect'] = 'You will be redirected to payment page in a few seconds';
 $_['text_card'] = 'Credit Card';
+$_['text_sofort'] = 'Sofort Card';
 $_['text_use_card'] = 'Use my saved card';
 $_['text_save_new_card'] = 'Save new card data';
 $_['text_not_use_card'] = 'Not use saved card data';

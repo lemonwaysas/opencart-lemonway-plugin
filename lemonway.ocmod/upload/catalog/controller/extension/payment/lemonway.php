@@ -21,8 +21,9 @@ class ControllerExtensionPaymentLemonWay extends Controller
 
     private $money_in_trans_details;
 
-    private function prefix() {
-        return (version_compare(VERSION, '3.0', '>=')) ? 'payment_' :  '';
+    private function prefix()
+    {
+        return (version_compare(VERSION, '3.0', '>=')) ? 'payment_' : '';
     }
 
     /*
@@ -63,7 +64,7 @@ class ControllerExtensionPaymentLemonWay extends Controller
     private function getLemonWayConfig()
     {
         $config = array();
-        
+
         if ($this->config->get($this->prefix() . 'lemonway_is_test_mode')) {
             // TEST
             $config['dkURL'] = $this->config->get($this->prefix() . 'lemonway_directkit_url_test'); //DIRECT KIT URL TEST
@@ -76,9 +77,10 @@ class ControllerExtensionPaymentLemonWay extends Controller
 
         $config['login'] = $this->config->get($this->prefix() . 'lemonway_api_login');
         $config['pass'] = $this->config->get($this->prefix() . 'lemonway_api_password');
-        $config['wallet'] = empty($this->config->get($this->prefix() . 'lemonway_environment_name')) ?
-            $this->config->get($this->prefix() . 'lemonway_wallet') : $this->config->get($this->prefix() . 'lemonway_custom_wallet');
+        $config['wallet'] = empty($this->config->get($this->prefix() . 'lemonway_environment_name')) ? $this->config->get($this->prefix() . 'lemonway_wallet') : $this->config->get($this->prefix() . 'lemonway_custom_wallet');
         $config['cssURL'] = $this->config->get($this->prefix() . 'lemonway_css_url');
+        $config['tplName'] = $this->config->get($this->prefix() . 'lemonway_template_name');
+
         $config['autoCommission'] = (int)!empty($this->config->get($this->prefix() . 'lemonway_environment_name'));
         // Autocom = 0 if lwecommerce, 1 if custom environment
 
@@ -116,19 +118,21 @@ class ControllerExtensionPaymentLemonWay extends Controller
     /*
     Check the real paid amount
     */
-    private function checkAmount($amount, $realAmount) {
+    private function checkAmount($amount, $realAmount)
+    {
         return ($amount == $realAmount);
     }
 
     /*
     Double check
     */
-    private function doublecheckAmount($amount, $wkToken) {
+    private function doublecheckAmount($amount, $wkToken)
+    {
         $details = $this->getMoneyInTransDetails($wkToken);
 
         // CREDIT + COMMISSION
         $realAmountDoublecheck = $details->TRANS->HPAY[0]->CRED + $details->TRANS->HPAY[0]->COM;
-        
+
         // Status 3 means success
         return (($details->TRANS->HPAY[0]->STATUS == '3') && ($amount == $realAmountDoublecheck));
     }
@@ -170,7 +174,7 @@ class ControllerExtensionPaymentLemonWay extends Controller
         $data['lemonway_oneclick_enabled'] = $this->config->get($this->prefix() . 'lemonway_oneclick_enabled');
         $data['customerId'] = empty($this->customer->getId()) ? 0 : $this->customer->getId();
         // A guest customer has no Id, we consider it 0
-        
+
         $data['card'] = $this->model_extension_payment_lemonway->getCustomerCard($this->customer->getId());
 
         return $this->load->view('extension/payment/lemonway', $data);
@@ -182,18 +186,12 @@ class ControllerExtensionPaymentLemonWay extends Controller
     */
     public function checkout()
     {
-        $available_cards = array('CB', 'VISA', 'MASTERCARD');
 
         if ((!$this->cart->hasProducts() && empty($this->session->data['vouchers'])) || (!$this->cart->hasStock() && !$this->config->get('config_stock_checkout'))) {
             // Redirect to the cart
             $this->response->redirect($this->url->link('checkout/cart', '', true));
         }
 
-        if (!isset($this->request->post['cc_type']) || !in_array($this->request->post['cc_type'], $available_cards)) {
-            // Redirect to the cart and display error
-            $this->session->data['error'] = $this->language->get('error_card_type');
-            $this->response->redirect($this->url->link('checkout/cart', '', true));
-        }
 
         //Load Language
         $this->load->language('extension/payment/lemonway');
@@ -211,7 +209,7 @@ class ControllerExtensionPaymentLemonWay extends Controller
             $this->session->data['error'] = $this->language->get('error_order_not_found');
             $this->response->redirect($this->url->link('checkout/cart', '', true));
         }
-        
+
         // Lemon Way config
         $config = $this->getLemonWayConfig();
 
@@ -224,11 +222,11 @@ class ControllerExtensionPaymentLemonWay extends Controller
         );
 
         $params = array();
-        
+
         $params['wallet'] = $config['wallet'];
         $total = number_format((float)$order_info['total'], 2, '.', '');
         $params['amountTot'] = $total;
-        $params['comment'] = $this->config->get('config_name') . " (OpenCart) - " . $order_id . " - " .
+        $params['comment'] = $this->config->get('config_name') . " - " . $order_id . " - " .
             $this->customer->getLastName() . " " . $this->customer->getFirstName() . " - " .
             $this->customer->getEmail();
         $params['autoCommission'] = $config['autoCommission'];
@@ -236,7 +234,7 @@ class ControllerExtensionPaymentLemonWay extends Controller
         $customerId = empty($this->customer->getId()) ? 0 : $this->customer->getId(); // A guest customer has no Id, we consider it 0
 
         $useCard = (
-            $this->config->get($this->prefix() . 'lemonway_oneclick_enabled') && 
+            $this->config->get($this->prefix() . 'lemonway_oneclick_enabled') &&
             $customerId &&
             $this->postValue('lemonway_oneclick') === 'use_card'
         );
@@ -302,54 +300,10 @@ class ControllerExtensionPaymentLemonWay extends Controller
             $moneyInToken = (string)$res->MONEYINWEB->TOKEN;
             $lang = substr($this->language->get('code'), 0, 2);
             $lang = array_key_exists($lang, $this->supportedLangs) ? $this->supportedLangs[$lang] : self::DEFAULT_LANG;
+//            . '&tpl=' . urlencode($config['tplName'])
+            $lwUrl = $config['wkURL'] . '?moneyintoken=' . $moneyInToken . '&p=' . urlencode($config['cssURL']) . '&lang=' . $lang . '&tpl=' . urlencode($config['tplName']);
+            $this->response->redirect($lwUrl);
 
-            $lwUrl = $config['wkURL'] . '?moneyintoken=' . $moneyInToken . '&p=' . urlencode($config['cssURL']) . '&lang=' . $lang;
-
-            $cc_type = $this->request->post['cc_type'];
-
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $lwUrl);
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-            curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
-            curl_setopt($ch, CURLOPT_TIMEOUT, 30);
-            curl_setopt($ch, CURLOPT_CAINFO, DIR_SYSTEM . "/library/lemonway/cacert.pem");
-
-            $response = curl_exec($ch);
-
-            $matches = array();
-
-            $patternFormActionAndData = '/(action="|name=data value=")([^"]*)"/i';
-            if (preg_match_all($patternFormActionAndData, $response, $matches)) {
-                if (isset($matches[2])) {
-                    list($actionUrl, $data) = $matches[2];
-                    $postFields = array(
-                        'DATA' => $data,
-                        $cc_type => 1
-                    );
-
-                    $text_redirect = $this->language->get('text_redirect');
-
-                    $html = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">' . "\n";
-                    $html .= '<html>' . "\n";
-                    $html .= '    <head>' . "\n";
-                    $html .= '    </head>';
-                    $html .= '    <body>';
-                    $html .= '        <div align="center"><br />' . $text_redirect . '</div>' . "\n";
-                    $html .= '        <div id="buttons" style="display: none;">' . "\n";
-                    $html .= '            <form id="lemonway_payment_redirect" action="' . $actionUrl . '" method="post">' . "\n";
-                    $html .= '                <input type="hidden" name="' . $cc_type . '_x" value="1" />' . "\n";
-                    $html .= '                <input type="hidden" name="' . $cc_type . '_y" value="1" />' . "\n";
-                    $html .= '                <input type="hidden" name="DATA" value="' . $data . '" />' . "\n";
-                    $html .= '            </form>' . "\n";
-                    $html .= '        </div>' . "\n";
-                    $html .= '        <script type="text/javascript">document.getElementById("lemonway_payment_redirect").submit();</script>' . "\n";
-                    $html .= '    </body>' . "\n";
-                    $html .= '</html>';
-
-                    die($html);
-                }
-            }
         } else { // If the client use a saved card => MoneyInWithCardId
             if (($card = $this->model_extension_payment_lemonway->getCustomerCard($this->customer->getId())) && $this->customer->isLogged()) {
                 //Call API for MoneyInWithCardId
@@ -402,8 +356,8 @@ class ControllerExtensionPaymentLemonWay extends Controller
         if ($this->isGet()) { // If redirection
             // GET params
             if ($this->config->get($this->prefix() . 'lemonway_debug')) {
-               $debug_log = new Log('lemonway_debug.log');
-               $debug_log->write('GET params: ' . print_r($this->request->get, true));
+                $debug_log = new Log('lemonway_debug.log');
+                $debug_log->write('GET params: ' . print_r($this->request->get, true));
             }
 
             $wkToken = $this->getValue('response_wkToken');
@@ -457,8 +411,8 @@ class ControllerExtensionPaymentLemonWay extends Controller
         } elseif ($this->isPost()) { // If IPN
             // Get response by IPN
             if ($this->config->get($this->prefix() . 'lemonway_debug')) {
-               $debug_log = new Log('lemonway_debug.log');
-               $debug_log->write('IPN: ' . print_r($this->request->post, true));
+                $debug_log = new Log('lemonway_debug.log');
+                $debug_log->write('IPN: ' . print_r($this->request->post, true));
             }
 
             $response_code = $this->postValue('response_code');

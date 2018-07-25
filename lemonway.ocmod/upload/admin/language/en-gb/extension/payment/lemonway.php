@@ -39,6 +39,8 @@ $_['text_debug_mode'] = 'Debug Mode';
 $_['text_custom_environment'] = 'CUSTOM ENVIRONMENT';
 $_['text_environment_name'] = 'Custom environment name';
 $_['text_wallet'] = 'Technical wallet name';
+$_['tpl_name'] = 'Template name';
+
 
 // CREDIT CARD
 $_['text_method_config'] = 'METHOD CONFIGURATION ';
