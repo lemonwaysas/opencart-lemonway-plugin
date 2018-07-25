@@ -90,6 +90,7 @@ class ModelExtensionPaymentLemonway extends Model
             FROM `" . DB_PREFIX . "lemonway_wktoken` lw 
             WHERE lw.`order_id` = " . (int)$this->db->escape($order_id)
         )->num_rows;
+
     }
 
     /*
