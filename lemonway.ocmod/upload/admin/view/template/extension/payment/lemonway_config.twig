@@ -16,7 +16,8 @@
                         <span class="input-group-addon">
                             <i class="fa fa-user"></i>
                         </span>
-                        <input type="text" name="lemonway_api_login" value="{{ lemonway_api_login }}" class="form-control" required />
+                        <input type="text" name="lemonway_api_login" value="{{ lemonway_api_login }}"
+                               class="form-control" required/>
                     </div>
                     <p class="help-block">
                         {{ text_help_login }}
@@ -34,7 +35,8 @@
                         <span class="input-group-addon">
                             <i class="fa fa-lock"></i>
                         </span>
-                        <input type="password" name="lemonway_api_password" class="form-control" {{ (lemonway_api_password is empty) ? "required" : "placeholder='#{text_masked}'" }} />
+                        <input type="password" name="lemonway_api_password"
+                               class="form-control" {{ (lemonway_api_password is empty) ? "required" : "placeholder='#{text_masked}'" }} />
                     </div>
                     <p class="help-block">
                         {{ text_help_password }}
@@ -44,11 +46,12 @@
 
             <div class="form-group">
                 <label class="control-label col-lg-3">
-                   {{ text_test_mode }}
+                    {{ text_test_mode }}
                 </label>
 
                 <div class="col-lg-7">
-                    <input type="checkbox" name="lemonway_is_test_mode" value="1" {{ lemonway_is_test_mode ? 'checked' : '' }} />
+                    <input type="checkbox" name="lemonway_is_test_mode"
+                           value="1" {{ lemonway_is_test_mode ? 'checked' : '' }} />
                     <p class="help-block">
                         {{ text_help_test_mode }}
                     </p>
@@ -76,7 +79,7 @@
                         <span class="input-group-addon">
                             <i class="fa fa-css3"></i>
                         </span>
-                        <input type="text" name="lemonway_css_url" class="form-control" value="{{ lemonway_css_url }}" />
+                        <input type="text" name="lemonway_css_url" class="form-control" value="{{ lemonway_css_url }}"/>
                     </div>
                     <p class="help-block">
                         {{ text_help_css }}
@@ -109,11 +112,11 @@
             <i class="fa fa-wrench"></i> {{ text_custom_environment }}
         </div>
         <div class="alert alert-warning"><i class="fa fa-exclamation-triangle"></i> {{ error_custom_env }}</div>
-        
+
         <!-- Custom environment name -->
         <div class="form-group">
             <label class="control-label col-lg-3">
-               {{ text_environment_name }}
+                {{ text_environment_name }}
             </label>
 
             <div class="col-lg-7">
@@ -121,7 +124,8 @@
                     <span class="input-group-addon">
                         <i class="fa fa-leaf"></i>
                     </span>
-                    <input type="text" name="lemonway_environment_name" value="{{ lemonway_environment_name }}" class="form-control" />
+                    <input type="text" name="lemonway_environment_name" value="{{ lemonway_environment_name }}"
+                           class="form-control"/>
                 </div>
             </div>
         </div>
@@ -138,12 +142,31 @@
                     <span class="input-group-addon">
                         <i class="fa fa-google-wallet"></i>
                     </span>
-                    <input type="hidden" name="lemonway_wallet" />
-                    <input type="text" name="lemonway_custom_wallet" value="{{ lemonway_custom_wallet }}" class="form-control" />
+                    <input type="hidden" name="lemonway_wallet"/>
+                    <input type="text" name="lemonway_custom_wallet" value="{{ lemonway_custom_wallet }}"
+                           class="form-control"/>
                 </div>
             </div>
         </div>
         <!-- End Wallet ID -->
+
+        <!-- Template name Atos v2-->
+        <div class="form-group">
+            <label class="control-label col-lg-3">
+                {{ tpl_name }}
+            </label>
+
+            <div class="col-lg-7">
+                <div class="input-group">
+                    <span class="input-group-addon">
+                        <i class="fa fa fa-file-archive-o"></i>
+                    </span>
+                    <input type="hidden" name="lemonway_template"/>
+                    <input type="text" name="lemonway_template_name" value="{{ lemonway_template_name }}"
+                           class="form-control"/>
+                </div>
+            </div>
+        </div>
     </div>
     <!-- End Custom environment panel -->
 </div>
