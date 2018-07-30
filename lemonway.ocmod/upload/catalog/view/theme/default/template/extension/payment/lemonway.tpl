@@ -41,28 +41,28 @@
 
             <!-- Choose a card type -->
             <!-- If the user choose to use a saved card, he doesn't need to choose a card type -->
-            <div id="card_choosing_container" style="<?= ($lemonway_oneclick_enabled && $customerId && $card) ? 'display: none' : '' ?>">
-                <div class="row">
-                    <div class="col-md-1 text-center">
-                        <label>
-                            <img class="img-responsive" alt="CB" src="catalog/view/theme/default/image/lemonway_cb.gif">
-                            <input type="radio" name="cc_type" value="CB" checked />
-                        </label>
-                    </div>
-                    <div class="col-md-1 text-center">
-                        <label>
-                            <img class="img-responsive" alt="Visa" src="catalog/view/theme/default/image/lemonway_visa.gif">
-                            <input type="radio" name="cc_type" value="VISA" />
-                        </label>
-                    </div>
-                    <div class="col-md-1 text-center">
-                        <label>
-                            <img class="img-responsive" alt="MasterCard" src="catalog/view/theme/default/image/lemonway_mastercard.gif">
-                            <input type="radio" name="cc_type" value="MASTERCARD" />
-                        </label>
-                    </div>
-                </div>
-            </div>
+            {*<div id="card_choosing_container" style="<?= ($lemonway_oneclick_enabled && $customerId && $card) ? 'display: none' : '' ?>">*}
+                {*<div class="row">*}
+                    {*<div class="col-md-1 text-center">*}
+                        {*<label>*}
+                            {*<img class="img-responsive" alt="CB" src="catalog/view/theme/default/image/lemonway_cb.gif">*}
+                            {*<input type="radio" name="cc_type" value="CB" checked />*}
+                        {*</label>*}
+                    {*</div>*}
+                    {*<div class="col-md-1 text-center">*}
+                        {*<label>*}
+                            {*<img class="img-responsive" alt="Visa" src="catalog/view/theme/default/image/lemonway_visa.gif">*}
+                            {*<input type="radio" name="cc_type" value="VISA" />*}
+                        {*</label>*}
+                    {*</div>*}
+                    {*<div class="col-md-1 text-center">*}
+                        {*<label>*}
+                            {*<img class="img-responsive" alt="MasterCard" src="catalog/view/theme/default/image/lemonway_mastercard.gif">*}
+                            {*<input type="radio" name="cc_type" value="MASTERCARD" />*}
+                        {*</label>*}
+                    {*</div>*}
+                {*</div>*}
+            {*</div>*}
 
             <div class="buttons">
                 <div class="pull-right">

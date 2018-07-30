@@ -1,8 +1,10 @@
 <?php
+
 class ModelExtensionPaymentLemonway extends Model
-{   
-    private function prefix() {
-        return (version_compare(VERSION, '3.0', '>=')) ? 'payment_' :  '';
+{
+    private function prefix()
+    {
+        return (version_compare(VERSION, '3.0', '>=')) ? 'payment_' : '';
     }
 
     /*
@@ -15,9 +17,9 @@ class ModelExtensionPaymentLemonway extends Model
         $mode = $this->config->get($this->prefix() . 'lemonway_is_test_mode') ? " (Test)" : "";
 
         $method_data = array(
-            'code'       => 'lemonway',
-            'title'      => $this->language->get('text_card') . $mode,
-            'terms'      => '',
+            'code' => 'lemonway',
+            'title' => $this->language->get('text_card'),
+            'terms' => '',
             'sort_order' => '' /*TODO: $this->config->get($this->prefix() . 'lemonway_cc_sort_order')*/
         );
 
@@ -48,8 +50,8 @@ class ModelExtensionPaymentLemonway extends Model
             $data['date_add'] = date('Y-m-d H:i:s');
             $query = "INSERT INTO `" . DB_PREFIX . "lemonway_oneclick` (`customer_id`, `card_id`, `date_add`) 
                 VALUES ( " .
-                    (int)$data['customer_id'] . ", " .
-                    (int)$data['card_id'] . ", 
+                (int)$data['customer_id'] . ", " .
+                (int)$data['card_id'] . ", 
                     '" . $this->db->escape($data['date_add']) . "'
                 )";
         } else {
@@ -58,9 +60,9 @@ class ModelExtensionPaymentLemonway extends Model
             $data['date_upd'] = date('Y-m-d H:i:s');
             $query = "REPLACE INTO `" . DB_PREFIX . "lemonway_oneclick` (`id`, `customer_id`, `card_id`, `card_num`, `card_exp`, `card_type`, `date_add`, `date_upd`) 
                 VALUES (" .
-                    (int)$this->db->escape($data['id']) . ", " .
-                    (int)$this->db->escape($data['customer_id']) . ", " .
-                    (int)$this->db->escape($data['card_id']) . ", 
+                (int)$this->db->escape($data['id']) . ", " .
+                (int)$this->db->escape($data['customer_id']) . ", " .
+                (int)$this->db->escape($data['card_id']) . ", 
                     '" . $this->db->escape($data['card_num']) . "', 
                     '" . $this->db->escape($data['card_exp']) . "', 
                     '" . $this->db->escape($data['card_type']) . "', 
@@ -84,12 +86,13 @@ class ModelExtensionPaymentLemonway extends Model
     Check if this order has a wkToken
     */
     private function checkIfOrderHasWkToken($order_id)
-    {   
+    {
         return (bool)$this->db->query(
             "SELECT `wktoken` 
             FROM `" . DB_PREFIX . "lemonway_wktoken` lw 
             WHERE lw.`order_id` = " . (int)$this->db->escape($order_id)
         )->num_rows;
+
     }
 
     /*

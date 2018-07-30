@@ -1,4 +1,5 @@
 <?php
+
 class ModelExtensionPaymentLemonway extends Model
 {
     public function install()

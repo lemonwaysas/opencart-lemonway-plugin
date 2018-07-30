@@ -5,9 +5,20 @@
         </div>
     {% endif %}
 
-        <h3 class="lemonway-method-title">
-            {{ text_card_lemonway }}  {{ (lemonway_is_test_mode) ? "(Test)" : "" }}
-        </h3>
+    <h3 class="lemonway-method-title">
+        {{ text_card_ideal }}  {{ (lemonway_is_test_mode) ? "(Test)" : "" }}
+    </h3>
+
+    {#<option name="rabobank" value="21">Rabobank</option>#}
+    {#<option name="31" value="ABN Amro">ABN Amro</option>#}
+    {#<option name="721">ING</option>#}
+    {#<option name="751"> SNS Bank</option>#}
+    {#<option name="161"> Van Lanschot Bankiers</option>#}
+    {#<option name="511">  Triodos Bank</option>#}
+    {#<option name="761">  ASN Bank</option>#}
+    {#<option name="771"> RegioBank</option>#}
+    {#<option name="801">  Knab Bank</option>#}
+    {#<option name="BUNQNL2A"> Bunk Bank</option>#}
 
 
     <div>
@@ -26,7 +37,7 @@
                         <div class="radio">
                             <label>
                                 <input type="radio" class="show_cards" name="lemonway_oneclick" value="register_card"/>
-                                {{ text_save_new_card }}
+                                {{ text_save_nlew_card }}
                             </label>
                         </div>
 
@@ -41,6 +52,24 @@
                 {% endif %}
             {% endif %}
 
+            <h4>Choisir une banque :</h4>
+
+            {#<input type="checkbox" name="rabobank" value="21" id="rabobank">#}
+            {#<label for="rabobank"> Rabobank </label><br>#}
+            {#<input type="checkbox" name="abnamro" value="31" id="abnamro">#}
+            {#<label for="abnamro"> ABN Amro </label><br>#}
+            <select name="bank">
+                <option  value="21">Rabobank</option>
+                <option  value="31">ABN Amro</option>
+                <option  value="721">ING</option>
+                <option  value="751"> SNS Bank</option>
+                <option  value="161"> Van Lanschot Bankiers</option>
+                <option  value="511"> Triodos Bank</option>
+                <option  value="761"> ASN Bank</option>
+                <option  value="771"> RegioBank</option>
+                <option value="801"> Knab Bank</option>
+                <option  value="BUNQNL2A"> Bunk Bank</option>
+            </select>
             <!-- Choose a card type -->
             <!-- If the user choose to use a saved card, he doesn't need to choose a card type -->
             {#<div id="card_choosing_container" style="{{ (lemonway_oneclick_enabled and customerId and card) ? 'display: none' : '' }}">#}

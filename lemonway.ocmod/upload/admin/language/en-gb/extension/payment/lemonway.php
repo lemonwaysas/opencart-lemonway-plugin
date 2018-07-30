@@ -38,7 +38,9 @@ $_['text_help_css'] = 'Customise the stylesheet of the payment page (Notice: If 
 $_['text_debug_mode'] = 'Debug Mode';
 $_['text_custom_environment'] = 'CUSTOM ENVIRONMENT';
 $_['text_environment_name'] = 'Custom environment name';
-$_['text_wallet'] = 'Technical wallet name';
+$_['text_wallet'] = 'Wallet name';
+$_['tpl_name'] = 'Template name';
+
 
 // CREDIT CARD
 $_['text_method_config'] = 'METHOD CONFIGURATION ';
@@ -49,6 +51,10 @@ $_['text_help_oneclick'] = 'Display One-click form when check out';
 $_['tab_about_us'] = 'ABOUT US';
 $_['tab_config'] = 'CONFIGURATION';
 $_['tab_cc'] = 'CREDIT CARD';
+$_['tab_klarna'] = 'KLARNA';
+$_['tab_ideal'] = 'iDEAL';
+
+
 
 // Error
 $_['error_permission'] = 'You do not have permission to modify the configuration!';

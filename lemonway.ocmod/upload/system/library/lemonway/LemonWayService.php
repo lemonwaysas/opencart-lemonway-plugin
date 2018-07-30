@@ -1,6 +1,7 @@
 <?php
+
 class LemonWayService
-{   
+{
     // Constants
     private $supportedLangs = array(
         'en', // English
@@ -24,7 +25,7 @@ class LemonWayService
      * @param string $lang
      * @param int $isLogEnabled
      */
-    public function __construct ($dkurl, $wlLogin, $wlPass, $lang = self::DEFAULT_LANG, $isLogEnabled = 1)
+    public function __construct($dkurl, $wlLogin, $wlPass, $lang = self::DEFAULT_LANG, $isLogEnabled = 1)
     {
         $this->dkUrl = $dkurl;
         $this->wlLogin = $wlLogin;
@@ -37,11 +38,12 @@ class LemonWayService
         }
     }
 
-    private function logRequest($serviceUrl, $request) {
+    private function logRequest($serviceUrl, $request)
+    {
         $this->debug_log->write('Service URL: ' . $serviceUrl);
 
         $request_debug = json_decode($request)->p;
-        unset($request_debug->wlPass); // Mask Password
+        //unset($request_debug->wlPass); // Mask Password
         $this->debug_log->write('Request: ' . json_encode($request_debug, JSON_PRETTY_PRINT));
     }
 
@@ -96,7 +98,6 @@ class LemonWayService
         curl_setopt($ch, CURLOPT_POSTFIELDS, $request);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
         curl_setopt($ch, CURLOPT_CAINFO, DIR_SYSTEM . "/library/lemonway/cacert.pem");
-
         $response = curl_exec($ch);
 
         if (curl_errno($ch)) { // Curl Error
@@ -125,7 +126,7 @@ class LemonWayService
                     $this->debug_log->write($error->E->Msg);
                     $this->logRequest($serviceUrl, $request);
                 }
-                
+
                 return $error;
             } else { // Success
                 if ($this->isLogEnabled) {
@@ -137,7 +138,8 @@ class LemonWayService
         }
     }
 
-    public function printError($e) {
+    public function printError($e)
+    {
         $str = !empty($e->Code) ? $e->Code . ": " : "";
         $str .= $e->Msg;
         $str .= !empty($e->Error) ? " (" . $e->Error . ")" : "";
@@ -153,6 +155,19 @@ class LemonWayService
     public function moneyInWebInit($params)
     {
         return self::sendRequest('MoneyInWebInit', $params);
+    }
+
+    public function moneyInSofortInit($params)
+    {
+        return self::sendRequest('MoneyInSofortInit', $params);
+    }
+
+    public function moneyInIDealInit($params){
+        return self::sendRequest('moneyInIDealInit', $params);
+    }
+
+    public function moneyInIDealConfirm ($params){
+        return self::sendRequest('moneyInIDealConfirm ', $params);
     }
 
     public function moneyInWithCardId($params)

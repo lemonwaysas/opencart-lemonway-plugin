@@ -15,7 +15,7 @@ class ControllerExtensionPaymentLemonway extends Controller
     private $variables = array();
 
     public function index()
-    {   
+    {
         // Load settings
         $this->load->model('setting/setting');
 
@@ -45,7 +45,11 @@ class ControllerExtensionPaymentLemonway extends Controller
         $this->variables['lemonway_environment_name'] = $this->model_setting_setting->getSettingValue($this->prefix() . 'lemonway_environment_name');
         $this->variables['lemonway_custom_wallet'] = $this->model_setting_setting->getSettingValue($this->prefix() . 'lemonway_custom_wallet');
         $this->variables['lemonway_status'] = $this->model_setting_setting->getSettingValue($this->prefix() . 'lemonway_status');
+        $this->variables['lemonway_klarna_status'] = $this->model_setting_setting->getSettingValue($this->prefix() . 'lemonway_klarna_status');
+        $this->variables['lemonway_ideal_status'] = $this->model_setting_setting->getSettingValue($this->prefix() . 'lemonway_ideal_status');
         $this->variables['lemonway_oneclick_enabled'] = $this->model_setting_setting->getSettingValue($this->prefix() . 'lemonway_oneclick_enabled');
+        $this->variables['lemonway_template_name'] = $this->model_setting_setting->getSettingValue($this->prefix() . 'lemonway_template_name');
+
 
         // Alerts
         $this->variables['no_permission'] = false;
@@ -62,6 +66,23 @@ class ControllerExtensionPaymentLemonway extends Controller
             $this->variables['no_method'] = true;
         }
 
+        if ($this->variables['lemonway_klarna_status']) { // If enabled
+            // Test the config
+            if ($this->testConfig()) {
+                $this->variables['success'] = true;
+            }
+        } else { // If no method enabled
+            $this->variables['no_method'] = true;
+        }
+
+        if ($this->variables['lemonway_ideal_status']) { // If enabled
+            // Test the config
+            if ($this->testConfig()) {
+                $this->variables['success'] = true;
+            }
+        } else { // If no method enabled
+            $this->variables['no_method'] = true;
+        }
         // Load tabs
         // About us
         $this->variables['about_us'] = $this->load->view('extension/payment/lemonway_aboutus', $this->variables);
@@ -69,12 +90,18 @@ class ControllerExtensionPaymentLemonway extends Controller
         $this->variables['config'] = $this->load->view('extension/payment/lemonway_config', $this->variables);
         // Credit Card
         $this->variables['cc'] = $this->load->view('extension/payment/lemonway_cc', $this->variables);
+        // Klarna
+        $this->variables['klarna'] = $this->load->view('extension/payment/lemonway_klarna', $this->variables);
+        // iDeal
+        $this->variables['ideal'] = $this->load->view('extension/payment/lemonway_ideal', $this->variables);
+
 
         $this->response->setOutput($this->load->view('extension/payment/lemonway', $this->variables));
     }
 
-    private function prefix() {
-        return (version_compare(VERSION, '3.0', '>=')) ? 'payment_' :  '';
+    private function prefix()
+    {
+        return (version_compare(VERSION, '3.0', '>=')) ? 'payment_' : '';
     }
 
     private function validate()
@@ -109,7 +136,7 @@ class ControllerExtensionPaymentLemonway extends Controller
             // If custom environment
             $env_name = $this->request->post['lemonway_environment_name'];
         }
-        
+
         // Generate API links
         $this->request->post['lemonway_directkit_url'] = sprintf(self::LEMONWAY_DIRECTKIT_FORMAT_URL_PROD, $env_name);
         $this->request->post['lemonway_webkit_url'] = sprintf(self::LEMONWAY_WEBKIT_FORMAT_URL_PROD, $env_name);
@@ -120,7 +147,18 @@ class ControllerExtensionPaymentLemonway extends Controller
         if (!isset($this->request->post['lemonway_status'])) {
             $this->request->post['lemonway_status'] = 0;
         }
-        
+
+        //Klarna status
+        if (!isset($this->request->post['lemonway_klarna_status'])) {
+            $this->request->post['lemonway_klarna_status'] = 0;
+        }
+
+        //iDeal status
+        if (!isset($this->request->post['lemonway_ideal_status'])) {
+            $this->request->post['lemonway_ideal_status'] = 0;
+        }
+
+
         // One-click
         if (!isset($this->request->post['lemonway_oneclick_enabled'])) {
             $this->request->post['lemonway_oneclick_enabled'] = 0;
@@ -170,6 +208,7 @@ class ControllerExtensionPaymentLemonway extends Controller
         }
 
         $res = $lemonwayService->getWalletDetails($params);
+        //var_dump($res->WALLET->ID);
         if (empty($this->variables['lemonway_environment_name'])) {
             // If lwecommerce, get wallet
             if (isset($res->WALLET->ID)) {
@@ -195,6 +234,8 @@ class ControllerExtensionPaymentLemonway extends Controller
         $this->load->model('setting/setting');
         $this->model_setting_setting->editSetting($this->prefix() . 'lemonway', [
             $this->prefix() . 'lemonway_status' => 1,
+            $this->prefix() . 'lemonway_klarna_status' => 1,
+            $this->prefix() . 'lemonway_ideal_status' => 1,
             $this->prefix() . 'lemonway_css_url' => self::CSS_URL_DEFAULT,
             $this->prefix() . 'lemonway_directkit_url' => sprintf(self::LEMONWAY_DIRECTKIT_FORMAT_URL_PROD, self::LEMONWAY_ENVIRONMENT_DEFAULT),
             $this->prefix() . 'lemonway_webkit_url' => sprintf(self::LEMONWAY_WEBKIT_FORMAT_URL_PROD, self::LEMONWAY_ENVIRONMENT_DEFAULT),

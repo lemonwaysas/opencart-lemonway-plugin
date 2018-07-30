@@ -4,8 +4,10 @@
     <div class="page-header">
         <div class="container-fluid">
             <div class="pull-right">
-                <button type="submit" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
-                <a href="{{ cancel_link }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a>
+                <button type="submit" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i
+                            class="fa fa-save"></i></button>
+                <a href="{{ cancel_link }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i
+                            class="fa fa-reply"></i></a>
             </div>
             <h1>{{ heading_title }}</h1>
         </div>
@@ -14,29 +16,29 @@
     <div class="container-fluid">
         <!-- Alerts  -->
         {% if no_permission %}
-        <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_permission }}</div>
+            <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_permission }}</div>
         {% endif %}
 
         {% if no_method %}
-        <div class="alert alert-warning"><i class="fa fa-exclamation-triangle"></i> {{ error_no_method }}
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-        </div>
+            <div class="alert alert-warning"><i class="fa fa-exclamation-triangle"></i> {{ error_no_method }}
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
         {% endif %}
 
         {% if lemonway_is_test_mode %}
-        <div class="alert alert-warning"><i class="fa fa-exclamation-triangle"></i> {{ error_test_mode }}
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-        </div>
+            <div class="alert alert-warning"><i class="fa fa-exclamation-triangle"></i> {{ error_test_mode }}
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
         {% endif %}
 
         {% if success %}
-        <div class="alert alert-success"><i class="fa fa-check-circle"></i> {{ error_success }}
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
-        </div>
+            <div class="alert alert-success"><i class="fa fa-check-circle"></i> {{ error_success }}
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+            </div>
         {% endif %}
 
         {% if api_error %}
-        <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_api }}</div>
+            <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_api }}</div>
         {% endif %}
         <!-- End alerts -->
 
@@ -46,9 +48,17 @@
                     <div role="tabpanel">
                         <!-- Nav tabs -->
                         <ul class="nav nav-tabs" role="tablist" data-tabs="tabs">
-                            <li class="active"><a id="aboutus_tab" href="#aboutus" role="tab" data-toggle="tab"><i class="fa fa-info-circle"></i> {{ tab_about_us }}</a></li>
-                            <li><a id="config_tab" href="#config" role="tab" data-toggle="tab"><i class="fa fa-cog"></i> {{ tab_config }}</a></li>
-                            <li><a id="cc_tab" href="#cc" role="tab" data-toggle="tab"><i class="fa fa-credit-card"></i> {{ tab_cc }}</a></li>
+                            <li class="active"><a id="aboutus_tab" href="#aboutus" role="tab" data-toggle="tab"><i
+                                            class="fa fa-info-circle"></i> {{ tab_about_us }}</a></li>
+                            <li><a id="config_tab" href="#config" role="tab" data-toggle="tab"><i
+                                            class="fa fa-cog"></i> {{ tab_config }}</a></li>
+                            <li><a id="cc_tab" href="#cc" role="tab" data-toggle="tab"><i
+                                            class="fa fa-credit-card"></i> {{ tab_cc }}</a></li>
+                            <li><a id="klarna_tab" href="#klarna" role="tab" data-toggle="tab"><i
+                                            class="fa fa-credit-card"></i> {{ tab_klarna }}</a></li>
+                            <li><a id="ideal_tab" href="#ideal" role="tab" data-toggle="tab"><i
+                                            class="fa fa-credit-card"></i> {{ tab_ideal }}</a></li>
+
                         </ul>
 
                         <!-- Tab panes -->
@@ -56,6 +66,9 @@
                             <div class="tab-pane fade in active" id="aboutus">{{ about_us }}</div>
                             <div class="tab-pane fade" id="config">{{ config }}</div>
                             <div class="tab-pane fade" id="cc">{{ cc }}</div>
+                            <div class="tab-pane fade" id="klarna">{{ klarna }}</div>
+                            <div class="tab-pane fade" id="ideal">{{ ideal }}</div>
+
                         </div>
                     </div>
                 </form>
@@ -70,20 +83,28 @@
 {{ footer }}
 
 <script>
-    $(function()
-    {   
+    $(function () {
         // Show config tab
-        $("#config_link").click(function(e)
-        {
+        $("#config_link").click(function (e) {
             e.preventDefault();
             $("#config_tab").tab('show');
         });
 
         // Show cc tab
-        $("#cc_link").click(function(e)
-        {
+        $("#cc_link").click(function (e) {
             e.preventDefault();
             $("#cc_tab").tab('show');
+        });
+
+        // Show cc tab
+        $("#klarna_link").click(function (e) {
+            e.preventDefault();
+            $("#klarna_tab").tab('show');
+        });
+        // Show cc tab
+        $("#ideal_link").click(function (e) {
+            e.preventDefault();
+            $("#ideal_tab").tab('show');
         });
     });
 </script>
