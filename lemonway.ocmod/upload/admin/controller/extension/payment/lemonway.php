@@ -46,6 +46,8 @@ class ControllerExtensionPaymentLemonway extends Controller
         $this->variables['lemonway_custom_wallet'] = $this->model_setting_setting->getSettingValue($this->prefix() . 'lemonway_custom_wallet');
         $this->variables['lemonway_status'] = $this->model_setting_setting->getSettingValue($this->prefix() . 'lemonway_status');
         $this->variables['lemonway_oneclick_enabled'] = $this->model_setting_setting->getSettingValue($this->prefix() . 'lemonway_oneclick_enabled');
+        $this->variables['lemonway_template_name'] = $this->model_setting_setting->getSettingValue($this->prefix() . 'lemonway_template_name');
+
 
         // Alerts
         $this->variables['no_permission'] = false;
@@ -61,7 +63,6 @@ class ControllerExtensionPaymentLemonway extends Controller
         } else { // If no method enabled
             $this->variables['no_method'] = true;
         }
-
         // Load tabs
         // About us
         $this->variables['about_us'] = $this->load->view('extension/payment/lemonway_aboutus', $this->variables);
@@ -170,6 +171,7 @@ class ControllerExtensionPaymentLemonway extends Controller
         }
 
         $res = $lemonwayService->getWalletDetails($params);
+        //var_dump($res->WALLET->ID);
         if (empty($this->variables['lemonway_environment_name'])) {
             // If lwecommerce, get wallet
             if (isset($res->WALLET->ID)) {
